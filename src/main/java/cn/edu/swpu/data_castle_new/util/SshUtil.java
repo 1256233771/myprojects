@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.util.Date;
 
 public class SshUtil {
-    public static String ip = "118.24.9.53";
-    public static String uploadPath = "/home/ubuntu/clf/testFile/";
-    public static String username = "ubuntu";
-    public static String password = "clf1256233771";
+    public static String ip = "连接服务器的ip地址";
+    public static String uploadPath = "/home/ubuntu/clf/testFile/";//上传文件的路径
+    public static String username = "服务器的用户名";
+    public static String password = "服务器的登录密码";
     public static boolean putFile(String localFilePath) throws IOException {
         Connection conn = new Connection(ip);//目标服务器地址
         conn.connect();
