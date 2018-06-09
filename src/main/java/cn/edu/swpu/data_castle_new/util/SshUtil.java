@@ -14,8 +14,6 @@ public class SshUtil {
     public static String username = "服务器的用户名";
     public static String password = "服务器的登录密码";
     public static boolean putFile(String localFilePath) throws IOException {
-        log.info("test git branch");
-        Date date = new Date();//测试
 
 
         Connection conn = new Connection(ip);//目标服务器地址
