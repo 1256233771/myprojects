@@ -2,16 +2,22 @@ package cn.edu.swpu.data_castle_new.util;
 
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.SCPClient;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Date;
 
+@Slf4j
 public class SshUtil {
     public static String ip = "连接服务器的ip地址";
     public static String uploadPath = "/home/ubuntu/clf/testFile/";//上传文件的路径
     public static String username = "服务器的用户名";
     public static String password = "服务器的登录密码";
     public static boolean putFile(String localFilePath) throws IOException {
+        log.info("test git branch");
+        Date date = new Date();//测试
+
+
         Connection conn = new Connection(ip);//目标服务器地址
         conn.connect();
         boolean isAuthenticated = conn.authenticateWithPassword(username, password);
