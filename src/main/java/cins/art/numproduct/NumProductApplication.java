@@ -13,8 +13,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableCaching
 public class NumProductApplication {
 	public static void main(String[] args) {
-//		MyThread myThread = new MyThread();
-//		myThread.start();
+		MyThread myThread = new MyThread();
+		myThread.start();
 		SpringApplication.run(NumProductApplication.class, args);
 	}
 }

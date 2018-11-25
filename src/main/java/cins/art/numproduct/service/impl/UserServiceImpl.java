@@ -13,6 +13,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.Date;
 
 @Slf4j
 @Service
@@ -47,6 +48,7 @@ public class UserServiceImpl implements UserService{
         if (result!=1){
             throw new MyException(ResultEnum.ADD_USER_FAIL);
         }
+        log.info("timestamp:{},注册用户成功....user:{}",new Date().toString(),user.toString());
         return user;
     }
 

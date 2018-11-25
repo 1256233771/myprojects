@@ -51,6 +51,9 @@ public class AnonController {
         }
         String key = redisService.getKey(userRegisterForm.getEmailAddress());
         log.info("key:{},userRegisterForm.getCode:{}",key,userRegisterForm.getCode());
+        if (userService.findUserByUserAddress(userRegisterForm.getEmailAddress())!=null){
+            return ResultVOUtil.error(ResultEnum.EMAIL_REGISTED);
+        }
         if(userRegisterForm.getCode().equals(key)){
             User user = Convert.convertUser(userRegisterForm);
             user.setRole("user");//TODO,默认为user
@@ -58,6 +61,7 @@ public class AnonController {
             try {
                 user.setUserAddress(rpcService.createUser(user.getPassword()).toString());
             } catch (Throwable throwable) {
+                throwable.printStackTrace();
                 return ResultVOUtil.error(ResultEnum.CREATE_USER_ADDRESS_FAIL);
             }
             Object userResult;
@@ -169,6 +173,7 @@ public class AnonController {
         try {
             EmailSend.sendMsgByMyEmail(code,emailAddress);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("邮件发送失败..");
             return ResultVOUtil.error(ResultEnum.SEND_EMAIL_FAIL);
         }

@@ -1,16 +1,14 @@
 package cins.art.numproduct.controller;
 
-import cins.art.numproduct.Util.ResultVOUtil;
 import cins.art.numproduct.ViewObject.ResultVO;
-import cins.art.numproduct.enums.ResultEnum;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 import javax.servlet.http.HttpServletRequest;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 
 @RestControllerAdvice
 public class ExceptionController {
@@ -31,6 +29,7 @@ public class ExceptionController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Object globalException(HttpServletRequest request, Throwable ex) {
+        ex.printStackTrace();
         return new ResultVO<>(getStatus(request).value(), ex.getMessage(), null);
     }
 

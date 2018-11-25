@@ -37,6 +37,10 @@ public enum ResultEnum {
     KEY_REPEAT(29,"主键重复"),
     CAN_NOT_ADD_TO_CAT(29,"商品已拥有,不能添加到购物车"),
     CAT_DETAIL_NOT_EXIST(30,"购物车内容信息不存在"),
+    UNLOCK_COUNT_ERROR(31,"解锁失败"),
+    NOT_BID_PRODUCT(32,"不是竞拍商品"),
+    ADD_BID_FAIL(33,"添加竞标信息失败"),
+    IS_BIDING(34,"已参竞拍过当前物品"),
     ;
 
     private Integer code;

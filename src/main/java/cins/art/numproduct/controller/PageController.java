@@ -8,7 +8,6 @@ import cins.art.numproduct.entity.Theme;
 import cins.art.numproduct.enums.ResultEnum;
 import cins.art.numproduct.service.ProductService;
 import cins.art.numproduct.service.ThemeService;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

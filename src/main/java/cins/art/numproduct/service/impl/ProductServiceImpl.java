@@ -190,5 +190,13 @@ public class ProductServiceImpl implements ProductService{
         return false;
     }
 
+    @Override
+    public boolean checkOwner(String picAddress, String userAddress) {
+        if (findByPicAddress(picAddress).getUserAddress().equals(userAddress)){
+            return true;
+        }
+        return false;
+    }
+
 
 }

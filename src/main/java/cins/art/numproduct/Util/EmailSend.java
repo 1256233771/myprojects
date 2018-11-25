@@ -62,7 +62,7 @@ public class EmailSend {
 
     public static String sendMsgByMyEmail(String msg,String sendEmailAddress) throws Exception {
         String myEmail = "1256233771@qq.com";
-        String myPassword = "nxtbusrgufqggiba";
+        String myPassword = "jbegpvfhuvqffjgi";
         String email2 = "1602827223@qq.com";
         String password2 = "acdqucktnnbuiade";
         sendMessage(myEmail,myPassword,sendEmailAddress,"您的注册验证码是:"+msg+"请在4分钟内填写.");

@@ -11,10 +11,12 @@ import java.net.URL;
  */
 @Slf4j
 public class RpcRequestUtil {
-    public static String url = "http://120.79.7.187:8082";
-//    public static String url = "http://127.0.0.1:8083";
+    public static String url = "http://119.23.233.57:8084";
+//    public static String url = "http://120.79.179.178:8082";
     public static String contentType = "application/json";
-    public static String mainAddress = "0x8bfc7e1607b1613a94a932442220a074d6017ea7";
+//    public static String mainAddress = "";
+
+    public static String mainAddress = "0x3e31f75806e4cbb7a0cea77fdeec7479475fb3bc";
     public static String mainPassword = "123";
 
     public static String doRequest(String methodName,Object[] params) throws Throwable {
@@ -51,10 +53,12 @@ public class RpcRequestUtil {
     public static void miner_start() throws Throwable {
         Object[] params = new Object[]{1};
         doRequest("miner_start",params);
+        log.info("开始挖矿....");
     }
 
     public static Object miner_stop() throws Throwable {
         Object[] params = new Object[]{1};
+        log.info("停止挖矿....");
         return doRequest("miner_stop",params);
     }
 

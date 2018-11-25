@@ -17,6 +17,7 @@ import cins.art.numproduct.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -99,7 +100,7 @@ public class CatServiceImpl implements CatService {
 
     //多个商品的交易
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.DEFAULT)
     public Object confirmBuy(List<String> catDetailIds,User user) {
         for (String id:catDetailIds){
             CatDetail catDetail = catDetailMapper.findByCatDetailId(id);

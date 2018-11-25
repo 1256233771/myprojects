@@ -14,9 +14,11 @@ import java.util.Random;
 @Slf4j
 public class MyUtil {
 //    public static String uploadPicPath = "/home/hk/图片/test/";//图片默认上传的文件夹
-//    public static String uploadVideoPath = "/home/hk/视频/test/";//视频文件保存路径
+    public static String uploadVideoPath = "/home/hk/视频/test/";//视频文件保存路径
+//    public static String uploadPicPath = "/home/ubuntu/clf/numproduct/";//图片默认上传的文件夹
+//    public static String uploadVideoPath = "/home/ubuntu/clf/numproduct/";//视频文件保存路径
     public static String uploadPicPath = "/usr/local/nginx/html/numproduct/";//图片默认上传的文件夹
-    public static String uploadVideoPath = "/home/clf/videoFile/";//视频文件保存路径
+//    public static String uploadVideoPath = "/home/cins/clf/videoFile";//视频文件保存路径
     public static String picUrl = "images/";//图片上传后保存的相对路径
 //    public static String picUrl = "";//图片上传后保存的相对路径
     /**
@@ -37,7 +39,6 @@ public class MyUtil {
         Integer num = random.nextInt(900000)+100000;//生成6为随机数
         return System.currentTimeMillis()+String.valueOf(num);
     }
-
 
 
     public static boolean uploadFile(MultipartFile file,String uploadPath){

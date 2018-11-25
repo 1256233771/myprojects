@@ -24,4 +24,5 @@ public interface ProductService {
     public List<Product> getRandomProducts(Integer limit);
     public Object updateSomeInfo(ProductChangeDTO changeDTO,User user);
     public boolean changePicOwner(String picAddress, User user);
+    public boolean checkOwner(String picAddress,String userAddress);
 }

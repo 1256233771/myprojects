@@ -3,10 +3,13 @@ package cins.art.numproduct.controller;
 import cins.art.numproduct.DTO.ProductChangeDTO;
 import cins.art.numproduct.DTO.ProductForm;
 import cins.art.numproduct.Util.ResultVOUtil;
+import cins.art.numproduct.Util.RpcRequestUtil;
 import cins.art.numproduct.Util.convert.Convert;
 import cins.art.numproduct.entity.Product;
+import cins.art.numproduct.entity.ProductBid;
 import cins.art.numproduct.entity.User;
 import cins.art.numproduct.enums.ResultEnum;
+import cins.art.numproduct.service.BidService;
 import cins.art.numproduct.service.CatService;
 import cins.art.numproduct.service.ProductService;
 import cins.art.numproduct.service.UserService;
@@ -19,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
@@ -33,6 +37,23 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private CatService catService;
+    @Autowired
+    private BidService bidService;
+
+    @ApiOperation("解锁账户")
+    @GetMapping("/unlock")
+    @RequiresAuthentication
+    public Object unlockCount(Principal principal){
+        User user = userService.getCurrentUser(principal);
+        try {
+            Object re = RpcRequestUtil.unlockAccount(RpcRequestUtil.mainAddress,RpcRequestUtil.mainPassword);
+            log.info("解锁:{}",re);
+        } catch (Throwable throwable) {
+            log.error("解锁用户失败");
+            return ResultVOUtil.error(ResultEnum.UNLOCK_COUNT_ERROR);
+        }
+        return ResultVOUtil.success("解锁成功...");
+    }
 
     @PostMapping("/upload")
     @RequiresAuthentication
@@ -76,9 +97,13 @@ public class ProductController {
         if(!product.getUserAddress().equals(user.getUserAddress())){
             return ResultVOUtil.error(ResultEnum.OVER_PERMISSION);
         }
+        Integer oldStatus = product.getProductStatus();
         product = productService.setStatus(picAddress,status);
         if(product.getProductStatus()!=status){
             return ResultVOUtil.error(ResultEnum.CHANGE_INFO_FAIL);
+        }
+        if (oldStatus==2&&product.getProductStatus()!=2){
+            //TODO,删除所有竞标信息
         }
         return ResultVOUtil.success(product);
     }
@@ -150,6 +175,84 @@ public class ProductController {
         List catDetailIdList = Convert.convertStrsToList(catDetailIds);
         return catService.confirmBuy(catDetailIdList,user);
     }
+
+    @ApiOperation("拥有者参与竞标")
+    @PostMapping("/intoBid")
+    @RequiresAuthentication
+    public Object intoBid(String picAddress, Principal principal){
+        if (picAddress==null){
+            ResultVOUtil.error(ResultEnum.PARAM_ERROR);
+        }
+        return bidService.ownerIntoBid(picAddress,principal);
+    }
+
+    @ApiOperation("/取消当前竞标")
+    @PostMapping("/cancelBid")
+    @RequiresAuthentication
+    public Object cancelBid(String picAddress,Principal principal){
+        if (picAddress==null){
+            return ResultVOUtil.error(ResultEnum.PARAM_ERROR);
+        }
+        return bidService.ownerCancelBid(picAddress,principal);
+    }
+
+    @ApiOperation("购买者添加竞标出价信息")
+    @PostMapping("/addBid")
+    @RequiresAuthentication
+    public Object addBid(String picAddress, BigDecimal price,Principal principal){
+        if (picAddress==null||price==null){
+            return ResultVOUtil.error(ResultEnum.PARAM_ERROR);
+        }
+        return bidService.bidProduct(picAddress,price,principal);
+    }
+
+    @ApiOperation("拥有者同意当前竞标出价")
+    @PostMapping("/agreeBid")
+    @RequiresAuthentication
+    public Object agreeBid(String picAddress,Principal principal){
+        if (picAddress==null){
+            return ResultVOUtil.error(ResultEnum.PARAM_ERROR);
+        }
+        return bidService.ownerAgreeBid(picAddress,principal);
+    }
+
+    @ApiOperation("查询当前用户的所有竞标的信息")
+    @PostMapping("/userAllBidInfo")
+    @RequiresAuthentication
+    public Object getUserAllBidInfo(Principal principal){
+        List<ProductBid> productBids = bidService.findBidByUser(principal);
+        return ResultVOUtil.success(productBids);
+    }
+
+    @ApiOperation("查询当前用户某一画作的竞标信息")
+    @PostMapping("/userPicBid")
+    @RequiresAuthentication
+    public Object getUserPicBid(String picAddress,Principal principal){
+        if (picAddress==null){
+            return ResultVOUtil.error(ResultEnum.PARAM_ERROR);
+        }
+        User user = userService.getCurrentUser(principal);
+        ProductBid productBid = bidService.findBidByUserAndPic(user.getUserAddress(),picAddress);
+        return ResultVOUtil.success(productBid);
+    }
+
+    @PostMapping("/productBidHighestPrice")
+    @ApiOperation("查询当前的竞标的商品的最高出价")
+    public Object productBidHighestPrice(String picAddress){
+        ProductBid productBid = bidService.findPicHighestBid(picAddress);
+        if (productBid==null){
+            return ResultVOUtil.success(null);
+        }
+        return ResultVOUtil.success(productBid.getPrice());
+    }
+
+    @ApiOperation("查询当前画作的所有竞标信息,只有")
+    @PostMapping("/getAllPicBid")
+    @RequiresAuthentication
+    public Object getAllPicBid(String picAddress){
+        return bidService.findPicAllBidInfo(picAddress);
+    }
+
 }
 
 

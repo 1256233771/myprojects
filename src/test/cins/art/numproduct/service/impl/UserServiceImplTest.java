@@ -18,13 +18,13 @@ public class UserServiceImplTest {
 
     @Autowired
     private UserService userService;
-//    @Test
-//    public void findUserByEmail() {
+    @Test
+    public void findUserByEmail() {
 //        userService.addUser(new User("123","email","password","user"));
 //        User user = userService.findUserByEmail("email");
 //        log.info("user:{}",user);
-//
-//    }
+
+    }
 
     @Test
     public void addUser() {
